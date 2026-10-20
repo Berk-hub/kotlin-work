@@ -1,19 +1,41 @@
-// Task 7.7.2: database-handling functions
-
 import kotlin.io.path.Path
+import kotlin.io.path.exists
 import kotlin.io.path.forEachLine
 import kotlin.io.path.writer
 
-typealias Database = MutableMap<String,String>
+typealias Database = MutableMap<String, String>
 
-fun createDatabase() = mutableMapOf<String,String>()
+fun createDatabase(): Database {
+    return mutableMapOf()
+}
 
 fun Database.load(filename: String) {
-    // Add code here to read names and numbers from the file
-    // and insert them as keys and values into the map
+
+    val file = Path(filename)
+
+    if (!file.exists()) return
+
+    file.forEachLine { line ->
+
+        val parts = line.split(",", limit = 2)
+
+        if (parts.size == 2) {
+            val name = parts[0].trim()
+            val number = parts[1].trim()
+
+            if (name.isNotEmpty() && number.isNotEmpty()) {
+                this[name] = number
+            }
+        }
+    }
 }
 
 fun Database.save(filename: String) {
-    // Add code here to write the keys and values of the map to
-    // the file, separated by a comma, one pairing per line
+
+    Path(filename).writer().use { output ->
+
+        for ((name, number) in this) {
+            output.write("$name,$number\n")
+        }
+    }
 }
