@@ -1,5 +1,3 @@
-// Task 10.3.1
-
 import kotlin.system.exitProcess
 
 fun display(text: String) {
@@ -7,6 +5,7 @@ fun display(text: String) {
 }
 
 fun main(args: Array<String>) {
+
     if (args.size != 1) {
         println("Single word required as a command line argument")
         exitProcess(1)
@@ -17,6 +16,8 @@ fun main(args: Array<String>) {
     val word = args[0].lowercase()
     val result = translate[word]
 
-    //println(result)
-    display(result)
+    when (result) {
+        null -> println("?")
+        else -> display(result)
+    }
 }

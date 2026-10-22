@@ -1,7 +1,24 @@
-// Task 8.3: weather station temperature analysis program
-
-import kotlin.system.exitProcess
-
 fun main(args: Array<String>) {
-    // Add your code here
+
+    if (args.size != 1) {
+        println("Error: Please provide a CSV filename.")
+        return
+    }
+
+    val data = fetchData(args[0])
+
+    if (data.isEmpty()) {
+        println("Error: No temperature data.")
+        return
+    }
+
+    val lowest = data.minBy { it.second }
+
+    val highest = data.maxBy { it.second }
+
+    val average = data.sumOf { it.second } / data.size
+
+    println("Coldest: ${lowest.first} (${lowest.second})")
+    println("Warmest: ${highest.first} (${highest.second})")
+    println("Average: %.2f".format(average))
 }
